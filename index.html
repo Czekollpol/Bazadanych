@@ -22,7 +22,7 @@ body{
     border-radius:30px;
     font-weight:bold;
     cursor:pointer;
-    box-shadow:0 0 20px rgba(250,204,21,.6);
+    z-index:5;
 }
 h1{text-align:center;margin-top:80px;font-size:48px;}
 
@@ -38,13 +38,12 @@ h1{text-align:center;margin-top:80px;font-size:48px;}
     border-radius:25px;
     backdrop-filter:blur(15px);
     text-align:center;
-    box-shadow:0 0 40px rgba(0,255,255,.15);
 }
 .stat-card span{font-size:55px;color:#22d3ee;font-weight:bold;}
 
 .table-section{
     margin:60px auto;
-    width:85%;
+    width:90%;
 }
 
 table{
@@ -66,6 +65,19 @@ th{
 tr:nth-child(even){
     background:rgba(255,255,255,.05);
 }
+
+/* BADGE */
+.badge{
+    padding:5px 12px;
+    border-radius:20px;
+    font-weight:bold;
+    color:black;
+}
+.rank-5{background:#EF4444;color:white;}
+.rank-4{background:#FFFFFF;color:black;}
+.rank-3{background:#22C55E;}
+.rank-2{background:#F97316;}
+.rank-1{background:#EAB308;}
 
 .admin-modal{
     position:fixed;
@@ -134,6 +146,7 @@ tr:nth-child(even){
             <tr>
                 <th>Imię i Nazwisko</th>
                 <th>UID</th>
+                <th>Ranga</th>
             </tr>
         </thead>
         <tbody id="mentorTable"></tbody>
@@ -169,7 +182,25 @@ tr:nth-child(even){
         <h3>Dodaj Mentora</h3>
         <input type="text" id="mentorUID" placeholder="UID">
         <input type="text" id="mentorName" placeholder="Imię i Nazwisko">
+        <select id="mentorRank">
+            <option value="5">[5] Chief</option>
+            <option value="4">[4] HQ</option>
+            <option value="3">[3] Senior Agent</option>
+            <option value="2">[2] Agent</option>
+            <option value="1">[1] Junior Agent</option>
+        </select>
         <button onclick="addMentor()">Dodaj</button>
+
+        <h3>Zmień Rangę</h3>
+        <select id="mentorChangeSelect"></select>
+        <select id="mentorChangeRank">
+            <option value="5">[5] Chief</option>
+            <option value="4">[4] HQ</option>
+            <option value="3">[3] Senior Agent</option>
+            <option value="2">[2] Agent</option>
+            <option value="1">[1] Junior Agent</option>
+        </select>
+        <button onclick="changeRank()">Zmień Rangę</button>
 
         <h3>Usuń Mentora</h3>
         <select id="mentorDeleteSelect"></select>
@@ -197,6 +228,14 @@ const ADMIN_PASSWORD="rekru123";
 let mentors=JSON.parse(localStorage.getItem("mentors"))||[];
 let students=JSON.parse(localStorage.getItem("students"))||[];
 
+const rankNames={
+5:"Chief",
+4:"HQ",
+3:"Senior Agent",
+2:"Agent",
+1:"Junior Agent"
+};
+
 function saveData(){
 localStorage.setItem("mentors",JSON.stringify(mentors));
 localStorage.setItem("students",JSON.stringify(students));
@@ -211,11 +250,14 @@ function renderTables(){
 mentorTable.innerHTML="";
 studentTable.innerHTML="";
 
+mentors.sort((a,b)=>b.rank-a.rank);
+
 mentors.forEach(m=>{
 mentorTable.innerHTML+=`
 <tr>
 <td>${m.name}</td>
 <td>${m.uid}</td>
+<td><span class="badge rank-${m.rank}">[${m.rank}] ${rankNames[m.rank]}</span></td>
 </tr>`;
 });
 
@@ -233,11 +275,13 @@ studentTable.innerHTML+=`
 function updateSelects(){
 mentorSelect.innerHTML="";
 mentorDeleteSelect.innerHTML="";
+mentorChangeSelect.innerHTML="";
 studentDeleteSelect.innerHTML="";
 
 mentors.forEach(m=>{
 mentorSelect.add(new Option(m.name,m.uid));
 mentorDeleteSelect.add(new Option(m.name,m.uid));
+mentorChangeSelect.add(new Option(m.name,m.uid));
 });
 
 students.forEach(s=>{
@@ -248,9 +292,18 @@ studentDeleteSelect.add(new Option(s.name,s.uid));
 function addMentor(){
 let uid=mentorUID.value;
 let name=mentorName.value;
+let rank=parseInt(mentorRank.value);
 if(!uid||!name)return alert("Uzupełnij dane");
-mentors.push({uid,name});
+mentors.push({uid,name,rank});
 saveData();updateCounts();renderTables();updateSelects();
+}
+
+function changeRank(){
+let uid=mentorChangeSelect.value;
+let newRank=parseInt(mentorChangeRank.value);
+let mentor=mentors.find(m=>m.uid===uid);
+if(mentor){mentor.rank=newRank;}
+saveData();renderTables();
 }
 
 function deleteMentor(){
@@ -295,6 +348,10 @@ document.body.style.overflow="auto";
 updateCounts();
 renderTables();
 updateSelects();
+</script>
+
+</body>
+</html>
 </script>
 
 </body>
