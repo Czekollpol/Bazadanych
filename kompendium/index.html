@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kompendium Rekru Team</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+    padding: 40px 20px;
+}
+
+/* NAV */
+.top-nav {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
+
+.nav-btn {
+    background: linear-gradient(45deg, #facc15, #f59e0b);
+    padding: 10px 18px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(250, 204, 21, 0.6);
+    transition: 0.3s;
+}
+
+.nav-btn:hover {
+    transform: scale(1.05);
+}
+
+/* HEADER */
+h1 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 40px;
+}
+
+/* SEKCJE */
+.section {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(15px);
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 18px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    transition: 0.4s;
+    animation: fadeIn 0.6s ease forwards;
+}
+
+.section:hover {
+    transform: translateY(-5px);
+}
+
+.section h2 {
+    margin-bottom: 15px;
+    font-size: 22px;
+}
+
+/* TABELA */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background: rgba(255,255,255,0.08);
+}
+
+tr {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* RANGI */
+.chief { color: gold; font-weight: bold; }
+.senior { color: #22c55e; font-weight: bold; }
+.agent { color: orange; font-weight: bold; }
+.junior { color: #facc15; font-weight: bold; }
+
+/* LISTY */
+ul {
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+/* ACCORDION */
+.accordion-header {
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+}
+
+.accordion.active .accordion-content {
+    max-height: 2000px;
+}
+
+.quote {
+    margin-top: 15px;
+    padding: 15px;
+    background: rgba(255,255,255,0.08);
+    border-left: 4px solid #facc15;
+    font-style: italic;
+}
+
+/* ANIMACJA */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+    <a href="../index.html" class="nav-btn">🏠 Panel główny</a>
+</div>
+
+<h1>📘 Kompendium Rekru Team</h1>
+
+<!-- 1️⃣ HIERARCHIA -->
+<div class="section">
+<h2>1️⃣ Hierarchia rang i ich możliwości</h2>
+
+<table>
+<tr>
+<th>Ranga</th>
+<th>Uprawnienia</th>
+<th>Limit podopiecznych</th>
+</tr>
+
+<tr>
+<td class="chief">[4] Chief</td>
+<td>Nadzór nad całym Rekru Team, decyzje strategiczne</td>
+<td>–</td>
+</tr>
+
+<tr>
+<td class="senior">[3] Senior Agent</td>
+<td>Prezentacje wprowadzające, dodawanie osób do rodziny</td>
+<td>3</td>
+</tr>
+
+<tr>
+<td class="agent">[2] Agent</td>
+<td>Rekrutacja i mentoring, dodawanie osób do rodziny</td>
+<td>2</td>
+</tr>
+
+<tr>
+<td class="junior">[1] Junior Agent</td>
+<td>Okres próbny, wsparcie podopiecznych</td>
+<td>1</td>
+</tr>
+
+</table>
+
+<div class="quote">
+Wskazówka: Każda ranga zna obowiązki wyższych rang i respektuje hierarchię.
+</div>
+
+</div>
+
+<!-- 2️⃣ MENTOR -->
+<div class="section">
+<h2>2️⃣ Mentor = Cierpliwość</h2>
+
+<ul>
+<li>Mentor tłumaczy, a nie krytykuje.</li>
+<li>Nowa osoba może nie znać zasad – to normalne.</li>
+<li>Cierpliwość buduje zaufanie i autorytet.</li>
+<li>Mentor pokazuje przykład kulturą i spokojem.</li>
+</ul>
+
+<div class="quote">
+„Odpowiadasz za start swojego podopiecznego i wspierasz go od pierwszego dnia.”
+</div>
+</div>
+
+<!-- 3️⃣ PROCEDURA -->
+<div class="section accordion">
+<div class="accordion-header">3️⃣ Procedura dodawania nowej osoby</div>
+<div class="accordion-content">
+
+<h3>1️⃣ Wstępna rozmowa</h3>
+<ul>
+<li>Zapytaj czy osoba szuka rodziny</li>
+<li>Sprawdź wymagania</li>
+</ul>
+
+<h3>2️⃣ Dodanie i wprowadzenie</h3>
+<ul>
+<li>Wyjaśnij gdzie jest dom rodziny</li>
+<li>Omów tablet i zakładki</li>
+<li>Zaproś na Discord</li>
+<li>Pokaż regulamin</li>
+</ul>
+
+<h3>3️⃣ Zakończenie</h3>
+<ul>
+<li>Osoba została dodana</li>
+<li>Napisała podanie</li>
+<li>Zna zasady</li>
+<li>Przydzielono mentora</li>
+</ul>
+
+</div>
+</div>
+
+<!-- 4️⃣ MENTORING -->
+<div class="section accordion">
+<div class="accordion-header">4️⃣ Mentoring – szczegółowy przewodnik</div>
+<div class="accordion-content">
+
+<ul>
+<li>Stały kontakt z podopiecznym</li>
+<li>Tłumaczenie zasad i struktury</li>
+<li>Wsparcie przy pierwszych zadaniach</li>
+<li>Budowanie autorytetu</li>
+<li>Monitorowanie postępów</li>
+<li>Raportowanie problemów przełożonym</li>
+</ul>
+
+<div class="quote">
+Cel mentoringu: Nowa osoba ma czuć się pewnie i wiedzieć do kogo się zwrócić.
+</div>
+
+</div>
+</div>
+
+<script>
+document.querySelectorAll(".accordion-header").forEach(header => {
+    header.addEventListener("click", () => {
+        header.parentElement.classList.toggle("active");
+    });
+});
+</script>
+
+</body>
+</html>
