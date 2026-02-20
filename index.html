@@ -23,29 +23,49 @@ body{
     font-weight:bold;
     cursor:pointer;
     box-shadow:0 0 20px rgba(250,204,21,.6);
-    transition:.3s;
-    z-index:5;
 }
-.admin-btn:hover{transform:scale(1.08);}
 h1{text-align:center;margin-top:80px;font-size:48px;}
 
 .stats-container{
     display:flex;
     justify-content:center;
     gap:50px;
-    margin-top:80px;
+    margin-top:50px;
 }
 .stat-card{
     background:rgba(255,255,255,.05);
-    padding:60px 80px;
+    padding:50px 70px;
     border-radius:25px;
     backdrop-filter:blur(15px);
     text-align:center;
     box-shadow:0 0 40px rgba(0,255,255,.15);
-    transition:.4s;
 }
-.stat-card:hover{transform:translateY(-10px) scale(1.03);}
-.stat-card span{font-size:60px;color:#22d3ee;font-weight:bold;}
+.stat-card span{font-size:55px;color:#22d3ee;font-weight:bold;}
+
+.table-section{
+    margin:60px auto;
+    width:85%;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:40px;
+    background:rgba(255,255,255,.05);
+    backdrop-filter:blur(10px);
+    border-radius:15px;
+    overflow:hidden;
+}
+th,td{
+    padding:12px;
+    text-align:center;
+}
+th{
+    background:#0ea5e9;
+}
+tr:nth-child(even){
+    background:rgba(255,255,255,.05);
+}
 
 .admin-modal{
     position:fixed;
@@ -66,10 +86,7 @@ h1{text-align:center;margin-top:80px;font-size:48px;}
     width:420px;
     max-height:90vh;
     overflow-y:auto;
-    box-shadow:0 0 40px rgba(0,255,255,.3);
-    animation:scaleIn .3s ease;
 }
-
 .modal-box input,select{
     width:100%;
     padding:10px;
@@ -79,7 +96,6 @@ h1{text-align:center;margin-top:80px;font-size:48px;}
     background:#1e293b;
     color:white;
 }
-
 .modal-box button{
     width:100%;
     padding:10px;
@@ -90,17 +106,8 @@ h1{text-align:center;margin-top:80px;font-size:48px;}
     color:white;
     font-weight:bold;
     cursor:pointer;
-    transition:.3s;
 }
-.modal-box button:hover{transform:scale(1.05);}
-.delete-btn{
-    background:#ef4444 !important;
-}
-
-@keyframes scaleIn{
-    from{opacity:0;transform:scale(.8);}
-    to{opacity:1;transform:scale(1);}
-}
+.delete-btn{background:#ef4444!important;}
 </style>
 </head>
 <body>
@@ -120,7 +127,32 @@ h1{text-align:center;margin-top:80px;font-size:48px;}
     </div>
 </div>
 
-<!-- LOGIN MODAL -->
+<div class="table-section">
+    <h2>Mentorzy</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Imię i Nazwisko</th>
+                <th>UID</th>
+            </tr>
+        </thead>
+        <tbody id="mentorTable"></tbody>
+    </table>
+
+    <h2>Podopieczni</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Imię i Nazwisko</th>
+                <th>UID</th>
+                <th>Mentor</th>
+            </tr>
+        </thead>
+        <tbody id="studentTable"></tbody>
+    </table>
+</div>
+
+<!-- LOGIN -->
 <div class="admin-modal" id="loginModal">
     <div class="modal-box">
         <h2>Logowanie Admina</h2>
@@ -135,118 +167,133 @@ h1{text-align:center;margin-top:80px;font-size:48px;}
         <h2>Panel Administracyjny</h2>
 
         <h3>Dodaj Mentora</h3>
-        <input type="text" id="mentorUID" placeholder="UID Mentora">
+        <input type="text" id="mentorUID" placeholder="UID">
         <input type="text" id="mentorName" placeholder="Imię i Nazwisko">
         <button onclick="addMentor()">Dodaj</button>
 
-        <h3 style="margin-top:20px;">Usuń Mentora</h3>
+        <h3>Usuń Mentora</h3>
         <select id="mentorDeleteSelect"></select>
-        <button class="delete-btn" onclick="deleteMentor()">Usuń Mentora</button>
+        <button class="delete-btn" onclick="deleteMentor()">Usuń</button>
 
-        <hr style="margin:20px 0;opacity:.2;">
+        <hr style="margin:20px 0;opacity:.3;">
 
         <h3>Dodaj Podopiecznego</h3>
-        <input type="text" id="studentUID" placeholder="UID Podopiecznego">
+        <input type="text" id="studentUID" placeholder="UID">
         <input type="text" id="studentName" placeholder="Imię i Nazwisko">
         <select id="mentorSelect"></select>
         <button onclick="addStudent()">Dodaj</button>
 
-        <h3 style="margin-top:20px;">Usuń Podopiecznego</h3>
+        <h3>Usuń Podopiecznego</h3>
         <select id="studentDeleteSelect"></select>
-        <button class="delete-btn" onclick="deleteStudent()">Usuń Podopiecznego</button>
+        <button class="delete-btn" onclick="deleteStudent()">Usuń</button>
 
-        <button onclick="closeAdmin()" style="margin-top:25px;background:#64748b;">Zamknij</button>
+        <button onclick="closeAdmin()" style="margin-top:20px;background:#64748b;">Zamknij</button>
     </div>
 </div>
 
 <script>
-const ADMIN_PASSWORD = "rekru123";
+const ADMIN_PASSWORD="rekru123";
 
-let mentors = JSON.parse(localStorage.getItem("mentors")) || [];
-let students = JSON.parse(localStorage.getItem("students")) || [];
-
-/* USUWA alvaro caruso jeśli istnieje */
-mentors = mentors.filter(m => m.name.toLowerCase() !== "alvaro caruso");
-students = students.filter(s => {
-    let mentor = mentors.find(m => m.uid === s.mentorUID);
-    return mentor !== undefined;
-});
-saveData();
+let mentors=JSON.parse(localStorage.getItem("mentors"))||[];
+let students=JSON.parse(localStorage.getItem("students"))||[];
 
 function saveData(){
-    localStorage.setItem("mentors",JSON.stringify(mentors));
-    localStorage.setItem("students",JSON.stringify(students));
+localStorage.setItem("mentors",JSON.stringify(mentors));
+localStorage.setItem("students",JSON.stringify(students));
 }
 
 function updateCounts(){
-    mentorCount.textContent = mentors.length;
-    studentCount.textContent = students.length;
+mentorCount.textContent=mentors.length;
+studentCount.textContent=students.length;
+}
+
+function renderTables(){
+mentorTable.innerHTML="";
+studentTable.innerHTML="";
+
+mentors.forEach(m=>{
+mentorTable.innerHTML+=`
+<tr>
+<td>${m.name}</td>
+<td>${m.uid}</td>
+</tr>`;
+});
+
+students.forEach(s=>{
+let mentor=mentors.find(m=>m.uid===s.mentorUID);
+studentTable.innerHTML+=`
+<tr>
+<td>${s.name}</td>
+<td>${s.uid}</td>
+<td>${mentor?mentor.name:"Brak"}</td>
+</tr>`;
+});
 }
 
 function updateSelects(){
-    mentorSelect.innerHTML="";
-    mentorDeleteSelect.innerHTML="";
-    studentDeleteSelect.innerHTML="";
+mentorSelect.innerHTML="";
+mentorDeleteSelect.innerHTML="";
+studentDeleteSelect.innerHTML="";
 
-    mentors.forEach(m=>{
-        let opt1=new Option(m.name+" ("+m.uid+")",m.uid);
-        let opt2=new Option(m.name+" ("+m.uid+")",m.uid);
-        mentorSelect.add(opt1);
-        mentorDeleteSelect.add(opt2);
-    });
+mentors.forEach(m=>{
+mentorSelect.add(new Option(m.name,m.uid));
+mentorDeleteSelect.add(new Option(m.name,m.uid));
+});
 
-    students.forEach(s=>{
-        let opt=new Option(s.name+" ("+s.uid+")",s.uid);
-        studentDeleteSelect.add(opt);
-    });
+students.forEach(s=>{
+studentDeleteSelect.add(new Option(s.name,s.uid));
+});
 }
 
 function addMentor(){
-    let uid=mentorUID.value;
-    let name=mentorName.value;
-    if(!uid||!name)return alert("Uzupełnij dane");
-    mentors.push({uid,name});
-    saveData();updateCounts();updateSelects();
+let uid=mentorUID.value;
+let name=mentorName.value;
+if(!uid||!name)return alert("Uzupełnij dane");
+mentors.push({uid,name});
+saveData();updateCounts();renderTables();updateSelects();
 }
 
 function deleteMentor(){
-    let uid=mentorDeleteSelect.value;
-    mentors=mentors.filter(m=>m.uid!==uid);
-    students=students.filter(s=>s.mentorUID!==uid);
-    saveData();updateCounts();updateSelects();
+let uid=mentorDeleteSelect.value;
+mentors=mentors.filter(m=>m.uid!==uid);
+students=students.filter(s=>s.mentorUID!==uid);
+saveData();updateCounts();renderTables();updateSelects();
 }
 
 function addStudent(){
-    let uid=studentUID.value;
-    let name=studentName.value;
-    let mentorUID=mentorSelect.value;
-    if(!uid||!name)return alert("Uzupełnij dane");
-    students.push({uid,name,mentorUID});
-    saveData();updateCounts();updateSelects();
+let uid=studentUID.value;
+let name=studentName.value;
+let mentorUID=mentorSelect.value;
+if(!uid||!name)return alert("Uzupełnij dane");
+students.push({uid,name,mentorUID});
+saveData();updateCounts();renderTables();updateSelects();
 }
 
 function deleteStudent(){
-    let uid=studentDeleteSelect.value;
-    students=students.filter(s=>s.uid!==uid);
-    saveData();updateCounts();updateSelects();
+let uid=studentDeleteSelect.value;
+students=students.filter(s=>s.uid!==uid);
+saveData();updateCounts();renderTables();updateSelects();
 }
 
 function openLogin(){
-    loginModal.classList.add("active");
-    document.body.style.overflow="hidden";
+loginModal.classList.add("active");
+document.body.style.overflow="hidden";
 }
+
 function login(){
-    if(adminPass.value===ADMIN_PASSWORD){
-        loginModal.classList.remove("active");
-        adminModal.classList.add("active");
-    }else alert("Złe hasło!");
+if(adminPass.value===ADMIN_PASSWORD){
+loginModal.classList.remove("active");
+adminModal.classList.add("active");
+}else alert("Złe hasło!");
 }
+
 function closeAdmin(){
-    adminModal.classList.remove("active");
-    document.body.style.overflow="auto";
+adminModal.classList.remove("active");
+document.body.style.overflow="auto";
 }
 
 updateCounts();
+renderTables();
 updateSelects();
 </script>
 
