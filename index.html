@@ -1,42 +1,120 @@
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { 
-  getFirestore, 
-  collection, 
-  addDoc, 
-  onSnapshot, 
-  deleteDoc, 
-  doc, 
-  updateDoc,
-  query,
-  where,
-  getDocs
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel Rekru Team</title>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCb7XMt8UZu6C5iWxcpdRPOKiME2SW5ONw",
-  authDomain: "rekruteam.firebaseapp.com",
-  projectId: "rekruteam",
-  storageBucket: "rekruteam.firebasestorage.app",
-  messagingSenderId: "159148318174",
-  appId: "1:159148318174:web:c891f9ed8590ec9b55d14f"
-};
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+body{background:linear-gradient(135deg,#0f172a,#020617);color:white;min-height:100vh;}
+.admin-btn{position:fixed;top:20px;right:20px;background:#facc15;border:none;padding:12px 22px;border-radius:30px;font-weight:bold;cursor:pointer;z-index:5;}
+h1{text-align:center;margin-top:80px;font-size:48px;}
+.stats-container{display:flex;justify-content:center;gap:50px;margin-top:50px;}
+.stat-card{background:rgba(255,255,255,.05);padding:50px 70px;border-radius:25px;backdrop-filter:blur(15px);text-align:center;}
+.stat-card span{font-size:55px;color:#22d3ee;font-weight:bold;}
+.table-section{margin:60px auto;width:90%;}
+table{width:100%;border-collapse:collapse;margin-bottom:40px;background:rgba(255,255,255,.05);backdrop-filter:blur(10px);border-radius:15px;overflow:hidden;}
+th,td{padding:12px;text-align:center;}
+th{background:#0ea5e9;}
+tr:nth-child(even){background:rgba(255,255,255,.05);}
+.badge{padding:5px 12px;border-radius:20px;font-weight:bold;color:black;}
+.rank-5{background:#EF4444;color:white;}
+.rank-4{background:#FFFFFF;color:black;}
+.rank-3{background:#22C55E;}
+.rank-2{background:#F97316;}
+.rank-1{background:#EAB308;}
+.admin-modal{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);display:none;justify-content:center;align-items:center;z-index:9999;}
+.admin-modal.active{display:flex;}
+.modal-box{background:rgba(30,41,59,.95);padding:40px;border-radius:20px;width:420px;max-height:90vh;overflow-y:auto;}
+.modal-box input,select{width:100%;padding:10px;margin:8px 0;border-radius:10px;border:none;background:#1e293b;color:white;}
+.modal-box button{width:100%;padding:10px;margin-top:8px;border-radius:10px;border:none;background:#22c55e;color:white;font-weight:bold;cursor:pointer;}
+.delete-btn{background:#ef4444!important;}
+</style>
+</head>
+<body>
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+<button class="admin-btn" onclick="openLogin()">⚙️ Panel Admin</button>
 
+<h1>PANEL REKRU TEAM</h1>
+
+<div class="stats-container">
+<div class="stat-card"><h2>Liczba Mentorów</h2><span id="mentorCount">0</span></div>
+<div class="stat-card"><h2>Liczba Podopiecznych</h2><span id="studentCount">0</span></div>
+</div>
+
+<div class="table-section">
+<h2>Mentorzy</h2>
+<table>
+<thead>
+<tr><th>Imię i Nazwisko</th><th>UID</th><th>Ranga</th></tr>
+</thead>
+<tbody id="mentorTable"></tbody>
+</table>
+
+<h2>Podopieczni</h2>
+<table>
+<thead>
+<tr><th>Imię i Nazwisko</th><th>UID</th><th>Mentor</th></tr>
+</thead>
+<tbody id="studentTable"></tbody>
+</table>
+</div>
+
+<div class="admin-modal" id="loginModal">
+<div class="modal-box">
+<h2>Logowanie Admina</h2>
+<input type="password" id="adminPass" placeholder="Hasło">
+<button onclick="login()">Zaloguj</button>
+</div>
+</div>
+
+<div class="admin-modal" id="adminModal">
+<div class="modal-box">
+<h2>Panel Administracyjny</h2>
+
+<h3>Dodaj Mentora</h3>
+<input type="text" id="mentorUID" placeholder="UID">
+<input type="text" id="mentorName" placeholder="Imię i Nazwisko">
+<select id="mentorRank">
+<option value="5">[5] Chief</option>
+<option value="4">[4] HQ</option>
+<option value="3">[3] Senior Agent</option>
+<option value="2">[2] Agent</option>
+<option value="1">[1] Junior Agent</option>
+</select>
+<button onclick="addMentor()">Dodaj</button>
+
+<h3>Usuń Mentora</h3>
+<select id="mentorDeleteSelect"></select>
+<button class="delete-btn" onclick="deleteMentor()">Usuń</button>
+
+<hr style="margin:20px 0;opacity:.3;">
+
+<h3>Dodaj Podopiecznego</h3>
+<input type="text" id="studentUID" placeholder="UID">
+<input type="text" id="studentName" placeholder="Imię i Nazwisko">
+<select id="mentorSelect"></select>
+<button onclick="addStudent()">Dodaj</button>
+
+<h3>Usuń Podopiecznego</h3>
+<select id="studentDeleteSelect"></select>
+<button class="delete-btn" onclick="deleteStudent()">Usuń</button>
+
+<button onclick="closeAdmin()" style="margin-top:20px;background:#64748b;">Zamknij</button>
+</div>
+</div>
+
+<script>
 const ADMIN_PASSWORD="rekru123";
+
+const BIN_ID="699c8f95d0ea881f40d27adc";
+const API_KEY="$2a$10$Er4xDqMuTh2Mr5HpTj11dONOsG.FENlRMPKk6ByJ6J/9mQw717iiS";
 
 let mentors=[];
 let students=[];
 
-const rankNames={
-5:"Chief",
-4:"HQ",
-3:"Senior Agent",
-2:"Agent",
-1:"Junior Agent"
-};
+const rankNames={5:"Chief",4:"HQ",3:"Senior Agent",2:"Agent",1:"Junior Agent"};
 
 const mentorTable=document.getElementById("mentorTable");
 const studentTable=document.getElementById("studentTable");
@@ -44,31 +122,34 @@ const mentorCount=document.getElementById("mentorCount");
 const studentCount=document.getElementById("studentCount");
 const mentorSelect=document.getElementById("mentorSelect");
 const mentorDeleteSelect=document.getElementById("mentorDeleteSelect");
-const mentorChangeSelect=document.getElementById("mentorChangeSelect");
 const studentDeleteSelect=document.getElementById("studentDeleteSelect");
 
-
-// 🔥 REALTIME – każdy widzi zmiany od razu
-onSnapshot(collection(db,"mentors"),snapshot=>{
-mentors=[];
-snapshot.forEach(d=>mentors.push({...d.data(),id:d.id}));
-render();
+async function loadData(){
+const res=await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`,{
+headers:{ "X-Master-Key":API_KEY }
 });
-
-onSnapshot(collection(db,"students"),snapshot=>{
-students=[];
-snapshot.forEach(d=>students.push({...d.data(),id:d.id}));
+const data=await res.json();
+mentors=data.record?.mentors||[];
+students=data.record?.students||[];
 render();
-});
+}
 
+async function saveData(){
+await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`,{
+method:"PUT",
+headers:{
+"Content-Type":"application/json",
+"X-Master-Key":API_KEY
+},
+body:JSON.stringify({mentors,students})
+});
+}
 
 function render(){
-
 mentorTable.innerHTML="";
 studentTable.innerHTML="";
 mentorSelect.innerHTML="";
 mentorDeleteSelect.innerHTML="";
-mentorChangeSelect.innerHTML="";
 studentDeleteSelect.innerHTML="";
 
 mentors.sort((a,b)=>b.rank-a.rank);
@@ -83,107 +164,58 @@ mentorTable.innerHTML+=`
 <td>${m.uid}</td>
 <td><span class="badge rank-${m.rank}">[${m.rank}] ${rankNames[m.rank]}</span></td>
 </tr>`;
-
-mentorSelect.add(new Option(m.name,m.id));
-mentorDeleteSelect.add(new Option(m.name,m.id));
-mentorChangeSelect.add(new Option(m.name,m.id));
+mentorSelect.add(new Option(m.name,m.uid));
+mentorDeleteSelect.add(new Option(m.name,m.uid));
 });
 
 students.forEach(s=>{
-let mentor=mentors.find(m=>m.id===s.mentorID);
-
+let mentor=mentors.find(m=>m.uid===s.mentorUID);
 studentTable.innerHTML+=`
 <tr>
 <td>${s.name}</td>
 <td>${s.uid}</td>
 <td>${mentor?mentor.name:"Brak"}</td>
 </tr>`;
-
-studentDeleteSelect.add(new Option(s.name,s.id));
+studentDeleteSelect.add(new Option(s.name,s.uid));
 });
 }
 
-
-// 🔥 DODAJ MENTORA
-window.addMentor=async function(){
-
-if(!mentorUID.value || !mentorName.value)
-return alert("Uzupełnij dane");
-
-await addDoc(collection(db,"mentors"),{
-uid:mentorUID.value,
-name:mentorName.value,
-rank:parseInt(mentorRank.value)
-});
-
-mentorUID.value="";
-mentorName.value="";
+async function addMentor(){
+mentors.push({uid:mentorUID.value,name:mentorName.value,rank:parseInt(mentorRank.value)});
+await saveData();
+loadData();
 }
 
-
-// 🔥 DODAJ PODOPIECZNEGO
-window.addStudent=async function(){
-
-if(!studentUID.value || !studentName.value)
-return alert("Uzupełnij dane");
-
-await addDoc(collection(db,"students"),{
-uid:studentUID.value,
-name:studentName.value,
-mentorID:mentorSelect.value
-});
-
-studentUID.value="";
-studentName.value="";
+async function addStudent(){
+students.push({uid:studentUID.value,name:studentName.value,mentorUID:mentorSelect.value});
+await saveData();
+loadData();
 }
 
-
-// 🔥 USUŃ MENTORA + JEGO PODOPIECZNYCH
-window.deleteMentor=async function(){
-
-const mentorID=mentorDeleteSelect.value;
-
-// usuń podopiecznych tego mentora
-const q=query(collection(db,"students"),where("mentorID","==",mentorID));
-const snapshot=await getDocs(q);
-snapshot.forEach(async (docSnap)=>{
-await deleteDoc(doc(db,"students",docSnap.id));
-});
-
-// usuń mentora
-await deleteDoc(doc(db,"mentors",mentorID));
+async function deleteMentor(){
+mentors=mentors.filter(m=>m.uid!==mentorDeleteSelect.value);
+students=students.filter(s=>s.mentorUID!==mentorDeleteSelect.value);
+await saveData();
+loadData();
 }
 
-
-// 🔥 USUŃ PODOPIECZNEGO
-window.deleteStudent=async function(){
-await deleteDoc(doc(db,"students",studentDeleteSelect.value));
+async function deleteStudent(){
+students=students.filter(s=>s.uid!==studentDeleteSelect.value);
+await saveData();
+loadData();
 }
 
-
-// 🔥 ZMIEŃ RANGĘ
-window.changeRank=async function(){
-await updateDoc(doc(db,"mentors",mentorChangeSelect.value),{
-rank:parseInt(mentorChangeRank.value)
-});
-}
-
-
-// 🔐 LOGIN
-window.openLogin=function(){
-loginModal.classList.add("active");
-}
-
-window.login=function(){
+function openLogin(){loginModal.classList.add("active");}
+function login(){
 if(adminPass.value===ADMIN_PASSWORD){
 loginModal.classList.remove("active");
 adminModal.classList.add("active");
 }else alert("Złe hasło!");
 }
+function closeAdmin(){adminModal.classList.remove("active");}
 
-window.closeAdmin=function(){
-adminModal.classList.remove("active");
-}
+loadData();
 </script>
+
 </body>
 </html>
