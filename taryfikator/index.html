@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taryfikator Kar – Rekru Team</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{
+background:linear-gradient(135deg,#0f172a,#020617);
+color:white;
+min-height:100vh;
+padding-bottom:60px;
+}
+
+.nav{
+position:fixed;
+top:20px;
+left:20px;
+background:#22d3ee;
+color:black;
+padding:10px 18px;
+border-radius:30px;
+font-weight:bold;
+text-decoration:none;
+}
+
+h1{
+text-align:center;
+margin-top:100px;
+font-size:42px;
+margin-bottom:40px;
+}
+
+.section{
+width:90%;
+margin:40px auto;
+}
+
+.section h2{
+margin-bottom:15px;
+font-size:26px;
+padding:10px;
+border-radius:10px;
+}
+
+.light{background:#eab308;color:black;}
+.medium{background:#f97316;}
+.heavy{background:#ef4444;}
+
+table{
+width:100%;
+border-collapse:collapse;
+background:rgba(255,255,255,.05);
+backdrop-filter:blur(10px);
+border-radius:15px;
+overflow:hidden;
+}
+
+th,td{
+padding:14px;
+text-align:left;
+}
+
+th{
+background:#0ea5e9;
+}
+
+tr:nth-child(even){
+background:rgba(255,255,255,.05);
+}
+
+.tier{
+font-weight:bold;
+color:#22d3ee;
+}
+</style>
+</head>
+<body>
+
+<a href="index.html" class="nav">⬅ Powrót do panelu</a>
+
+<h1>TARYFIKATOR KAR – REKRU TEAM</h1>
+
+<div class="section">
+<h2 class="light">A – Lekkie wykroczenia</h2>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Opis</th>
+<th>Zakres Tier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A.1</td>
+<td>Spóźnienie bez wcześniejszej informacji</td>
+<td class="tier">Tier 1</td>
+</tr>
+<tr>
+<td>A.2</td>
+<td>Powtarzające się spóźnienia</td>
+<td class="tier">Tier 1-2</td>
+</tr>
+<tr>
+<td>A.3</td>
+<td>Zaniedbanie drobnego kroku procedury</td>
+<td class="tier">Tier 1-2</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="section">
+<h2 class="medium">B – Średnie wykroczenia</h2>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Opis</th>
+<th>Zakres Tier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>B.1</td>
+<td>Brak współpracy z podopiecznym</td>
+<td class="tier">Tier 2-3</td>
+</tr>
+<tr>
+<td>B.2</td>
+<td>Pominięcie istotnego kroku procedury</td>
+<td class="tier">Tier 2-3</td>
+</tr>
+<tr>
+<td>B.3</td>
+<td>Ignorowanie zaleceń/poleceń HC lub Chief</td>
+<td class="tier">Tier 2-4</td>
+</tr>
+<tr>
+<td>B.4</td>
+<td>Niska współpraca mimo uwag</td>
+<td class="tier">Tier 2-3</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="section">
+<h2 class="heavy">C – Ciężkie wykroczenia</h2>
+<table>
+<thead>
+<tr>
+<th>Kod</th>
+<th>Opis</th>
+<th>Zakres Tier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C.1</td>
+<td>Wyzywanie podopiecznego</td>
+<td class="tier">Tier 2-5</td>
+</tr>
+<tr>
+<td>C.2</td>
+<td>Oszustwo lub celowe wprowadzanie w błąd</td>
+<td class="tier">Tier 4-5</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</body>
+</html>
