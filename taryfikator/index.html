@@ -15,41 +15,52 @@ min-height:100vh;
 padding-bottom:60px;
 }
 
+/* 🔥 PRZYCISK DOMKU */
 .nav{
 position:fixed;
 top:20px;
 left:20px;
-background:#22d3ee;
-color:black;
-padding:10px 18px;
-border-radius:30px;
-font-weight:bold;
+background:rgba(255,255,255,.08);
+padding:12px 16px;
+border-radius:50%;
+font-size:20px;
 text-decoration:none;
+color:white;
+transition:.3s;
+backdrop-filter:blur(10px);
 }
 
+.nav:hover{
+background:rgba(255,255,255,.18);
+transform:scale(1.1);
+}
+
+/* 🔥 TYTUŁ */
 h1{
 text-align:center;
 margin-top:100px;
 font-size:42px;
 margin-bottom:40px;
+letter-spacing:1px;
 }
 
+/* 🔥 SEKCJE */
 .section{
 width:90%;
-margin:40px auto;
+margin:50px auto;
 }
 
 .section h2{
 margin-bottom:15px;
-font-size:26px;
-padding:10px;
-border-radius:10px;
+font-size:22px;
+padding:12px 18px;
+border-radius:12px;
+background:rgba(255,255,255,.06);
+color:#cbd5e1;
+letter-spacing:.5px;
 }
 
-.light{background:#eab308;color:black;}
-.medium{background:#f97316;}
-.heavy{background:#ef4444;}
-
+/* 🔥 TABELA */
 table{
 width:100%;
 border-collapse:collapse;
@@ -65,11 +76,17 @@ text-align:left;
 }
 
 th{
-background:#0ea5e9;
+background:rgba(255,255,255,.08);
+font-weight:600;
 }
 
 tr:nth-child(even){
-background:rgba(255,255,255,.05);
+background:rgba(255,255,255,.04);
+}
+
+tr:hover{
+background:rgba(255,255,255,.08);
+transition:.2s;
 }
 
 .tier{
@@ -80,12 +97,12 @@ color:#22d3ee;
 </head>
 <body>
 
-<a href="index.html" class="nav">⬅ Powrót do panelu</a>
+<a href="../index.html" class="nav">🏠</a>
 
-<h1>TARYFIKATOR KAR – REKRU TEAM</h1>
+<h1>TARYFIKATOR KAR</h1>
 
 <div class="section">
-<h2 class="light">A – Lekkie wykroczenia</h2>
+<h2>A – Lekkie wykroczenia</h2>
 <table>
 <thead>
 <tr>
@@ -115,7 +132,7 @@ color:#22d3ee;
 </div>
 
 <div class="section">
-<h2 class="medium">B – Średnie wykroczenia</h2>
+<h2>B – Średnie wykroczenia</h2>
 <table>
 <thead>
 <tr>
@@ -150,7 +167,7 @@ color:#22d3ee;
 </div>
 
 <div class="section">
-<h2 class="heavy">C – Ciężkie wykroczenia</h2>
+<h2>C – Ciężkie wykroczenia</h2>
 <table>
 <thead>
 <tr>
@@ -175,4 +192,4 @@ color:#22d3ee;
 </div>
 
 </body>
-</html>
+</html>tml>
