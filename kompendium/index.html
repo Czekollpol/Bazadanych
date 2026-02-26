@@ -3,192 +3,304 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Taryfikator Kar – Rekru Team</title>
+<title>Kompendium Rekru Team</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
-
-body{
-background:linear-gradient(135deg,#0f172a,#020617);
-color:white;
-min-height:100vh;
-padding-bottom:60px;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
 }
 
-/* 🔥 PRZYCISK DOMKU */
-.nav{
-position:fixed;
-top:20px;
-left:20px;
-background:rgba(255,255,255,.08);
-padding:12px 16px;
-border-radius:50%;
-font-size:20px;
-text-decoration:none;
-color:white;
-transition:.3s;
-backdrop-filter:blur(10px);
+body {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+    padding: 40px 20px;
 }
 
-.nav:hover{
-background:rgba(255,255,255,.18);
-transform:scale(1.1);
+/* NAV */
+.top-nav {
+    position: fixed;
+    top: 20px;
+    right: 20px;
 }
 
-/* 🔥 TYTUŁ */
-h1{
-text-align:center;
-margin-top:100px;
-font-size:42px;
-margin-bottom:40px;
-letter-spacing:1px;
+.nav-btn {
+    background: linear-gradient(45deg, #facc15, #f59e0b);
+    padding: 10px 18px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(250, 204, 21, 0.6);
+    transition: 0.3s;
 }
 
-/* 🔥 SEKCJE */
-.section{
-width:90%;
-margin:50px auto;
+.nav-btn:hover {
+    transform: scale(1.05);
 }
 
-.section h2{
-margin-bottom:15px;
-font-size:22px;
-padding:12px 18px;
-border-radius:12px;
-background:rgba(255,255,255,.06);
-color:#cbd5e1;
-letter-spacing:.5px;
+/* HEADER */
+h1 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 40px;
 }
 
-/* 🔥 TABELA */
-table{
-width:100%;
-border-collapse:collapse;
-background:rgba(255,255,255,.05);
-backdrop-filter:blur(10px);
-border-radius:15px;
-overflow:hidden;
+/* SEKCJE */
+.section {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(15px);
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 18px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    transition: 0.4s;
+    animation: fadeIn 0.6s ease forwards;
 }
 
-th,td{
-padding:14px;
-text-align:left;
+.section:hover {
+    transform: translateY(-5px);
 }
 
-th{
-background:rgba(255,255,255,.08);
-font-weight:600;
+.section h2 {
+    margin-bottom: 15px;
+    font-size: 22px;
 }
 
-tr:nth-child(even){
-background:rgba(255,255,255,.04);
+/* TABELA */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
 }
 
-tr:hover{
-background:rgba(255,255,255,.08);
-transition:.2s;
+th, td {
+    padding: 12px;
+    text-align: center;
 }
 
-.tier{
-font-weight:bold;
-color:#22d3ee;
+th {
+    background: rgba(255,255,255,0.08);
+}
+
+tr {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* RANGI */
+.chief { color: gold; font-weight: bold; }
+.senior { color: #22c55e; font-weight: bold; }
+.agent { color: orange; font-weight: bold; }
+.junior { color: #facc15; font-weight: bold; }
+
+/* LISTY */
+ul {
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+h3 {
+    margin-top: 20px;
+}
+
+/* ACCORDION */
+.accordion-header {
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.6s ease;
+}
+
+.accordion.active .accordion-content {
+    max-height: 3000px;
+}
+
+.quote {
+    margin-top: 15px;
+    padding: 15px;
+    background: rgba(255,255,255,0.08);
+    border-left: 4px solid #facc15;
+    font-style: italic;
+}
+
+/* ANIMACJA */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 </style>
 </head>
 <body>
 
-<a href="../index.html" class="nav">🏠</a>
-
-<h1>TARYFIKATOR KAR</h1>
-
-<div class="section">
-<h2>A – Lekkie wykroczenia</h2>
-<table>
-<thead>
-<tr>
-<th>Kod</th>
-<th>Opis</th>
-<th>Zakres Tier</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A.1</td>
-<td>Spóźnienie bez wcześniejszej informacji</td>
-<td class="tier">Tier 1</td>
-</tr>
-<tr>
-<td>A.2</td>
-<td>Powtarzające się spóźnienia</td>
-<td class="tier">Tier 1-2</td>
-</tr>
-<tr>
-<td>A.3</td>
-<td>Zaniedbanie drobnego kroku procedury</td>
-<td class="tier">Tier 1-2</td>
-</tr>
-</tbody>
-</table>
+<div class="top-nav">
+    <a href="../index.html" class="nav-btn">🏠 Panel główny</a>
 </div>
 
+<h1>📘 Kompendium Rekru Team</h1>
+
+<!-- 1️⃣ HIERARCHIA -->
 <div class="section">
-<h2>B – Średnie wykroczenia</h2>
+<h2>1️⃣ Hierarchia rang i ich możliwości</h2>
+
 <table>
-<thead>
 <tr>
-<th>Kod</th>
-<th>Opis</th>
-<th>Zakres Tier</th>
+<th>Ranga</th>
+<th>Uprawnienia</th>
+<th>Limit podopiecznych</th>
 </tr>
-</thead>
-<tbody>
+
 <tr>
-<td>B.1</td>
-<td>Brak współpracy z podopiecznym</td>
-<td class="tier">Tier 2-3</td>
+<td class="chief">[4] Chief</td>
+<td>Nadzór nad całym Rekru Team, decyzje strategiczne</td>
+<td>–</td>
 </tr>
+
 <tr>
-<td>B.2</td>
-<td>Pominięcie istotnego kroku procedury</td>
-<td class="tier">Tier 2-3</td>
+<td class="senior">[3] Senior Agent</td>
+<td>Prezentacje wprowadzające, dodawanie osób do rodziny</td>
+<td>3</td>
 </tr>
+
 <tr>
-<td>B.3</td>
-<td>Ignorowanie zaleceń/poleceń HC lub Chief</td>
-<td class="tier">Tier 2-4</td>
+<td class="agent">[2] Agent</td>
+<td>Rekrutacja i mentoring, dodawanie osób do rodziny</td>
+<td>2</td>
 </tr>
+
 <tr>
-<td>B.4</td>
-<td>Niska współpraca mimo uwag</td>
-<td class="tier">Tier 2-3</td>
+<td class="junior">[1] Junior Agent</td>
+<td>Okres próbny, wsparcie podopiecznych</td>
+<td>1</td>
 </tr>
-</tbody>
+
 </table>
+
+<div class="quote">
+Wskazówka: Każda ranga zna obowiązki wyższych rang i respektuje hierarchię.
+</div>
 </div>
 
+<!-- 2️⃣ MENTOR -->
 <div class="section">
-<h2>C – Ciężkie wykroczenia</h2>
-<table>
-<thead>
-<tr>
-<th>Kod</th>
-<th>Opis</th>
-<th>Zakres Tier</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>C.1</td>
-<td>Wyzywanie podopiecznego</td>
-<td class="tier">Tier 2-5</td>
-</tr>
-<tr>
-<td>C.2</td>
-<td>Oszustwo lub celowe wprowadzanie w błąd</td>
-<td class="tier">Tier 4-5</td>
-</tr>
-</tbody>
-</table>
+<h2>2️⃣ Mentor = Cierpliwość</h2>
+
+<ul>
+<li>Mentor tłumaczy, a nie krytykuje.</li>
+<li>Nowa osoba może nie znać zasad – to normalne.</li>
+<li>Cierpliwość buduje zaufanie i autorytet.</li>
+<li>Mentor pokazuje przykład kulturą i spokojem.</li>
+</ul>
+
+<div class="quote">
+„Odpowiadasz za start swojego podopiecznego i wspierasz go od pierwszego dnia.”
+</div>
+</div>
+
+<!-- 3️⃣ PROCEDURA -->
+<div class="section accordion">
+<div class="accordion-header">3️⃣ Procedura dodawania nowej osoby</div>
+<div class="accordion-content">
+
+<h3>1️⃣ Wstępna rozmowa</h3>
+<ul>
+<li>Zapytaj czy dana osoba aktywnie szuka rodziny.</li>
+<li>Przedstaw krótko kim jesteśmy i jakie mamy wartości.</li>
+<li>Upewnij się, że kandydat rozumie wymagania oraz obowiązki.</li>
+<li>Sprawdź nastawienie – kultura osobista i chęć współpracy są kluczowe.</li>
+</ul>
+
+<h3>2️⃣ Dodanie do rodziny i wprowadzenie</h3>
+<ul>
+<li>Dodaj osobę do rodziny zgodnie z obowiązującą procedurą.</li>
+<li>Pokaż gdzie znajduje się dom rodziny oraz kluczowe miejsca.</li>
+<li>Omów tablet – wyjaśnij każdą zakładkę i jej zastosowanie.</li>
+<li>Zaproś na Discord i poinformuj o obowiązku napisania podania.</li>
+<li>Po zaakceptowaniu podania przedstaw strukturę Discorda.</li>
+<li>Omów regulamin oraz podstawowe zasady komunikacji.</li>
+<li>Poinformuj o mentoringu i przydzieleniu mentora.</li>
+</ul>
+
+<h3>3️⃣ Formalne zakończenie procesu</h3>
+<p>Proces uznaje się za zakończony, gdy:</p>
+<ul>
+<li>Osoba została poprawnie dodana do rodziny.</li>
+<li>Dołączyła na Discord i napisała podanie.</li>
+<li>Zna podstawowe zasady funkcjonowania rodziny.</li>
+<li>Została poinformowana o mentoringu.</li>
+<li>Mentor nawiązał pierwszy kontakt.</li>
+</ul>
+
+<div class="quote">
+Każde niedopatrzenie na starcie może skutkować problemami w przyszłości – dokładność jest obowiązkiem Agenta.
+</div>
+
+</div>
+</div>
+
+<!-- 4️⃣ MENTORING -->
+<div class="section accordion">
+<div class="accordion-header">4️⃣ Mentoring – szczegółowy przewodnik</div>
+<div class="accordion-content">
+
+<h3>🔹 Rola mentora</h3>
+<ul>
+<li>Mentor jest pierwszym autorytetem dla nowej osoby.</li>
+<li>Odpowiada za prawidłowe wprowadzenie do systemu.</li>
+<li>Reprezentuje kulturę i standardy Rekru Team.</li>
+</ul>
+
+<h3>🔹 Obowiązki codzienne</h3>
+<ul>
+<li>Minimum jeden kontakt dziennie w pierwszych dniach.</li>
+<li>Sprawdzanie czy podopieczny rozumie swoje zadania.</li>
+<li>Korygowanie błędów w sposób spokojny i konstruktywny.</li>
+<li>Motywowanie do aktywności i zaangażowania.</li>
+</ul>
+
+<h3>🔹 Budowanie relacji</h3>
+<ul>
+<li>Twórz atmosferę wsparcia, nie presji.</li>
+<li>Słuchaj pytań i odpowiadaj jasno.</li>
+<li>Dostosuj tempo nauki do możliwości podopiecznego.</li>
+<li>Bądź przykładem profesjonalizmu.</li>
+</ul>
+
+<h3>🔹 Monitorowanie postępów</h3>
+<ul>
+<li>Analizuj aktywność podopiecznego.</li>
+<li>Informuj przełożonych o problemach.</li>
+<li>Raportuj wyjątkowe postępy.</li>
+<li>W razie potrzeby rekomenduj awans.</li>
+</ul>
+
+<div class="quote">
+Cel mentoringu: Nowy członek powinien po 7 dniach czuć się pewnie, znać strukturę i rozumieć swoje obowiązki.
+</div>
+
+</div>
+</div>
+
+<script>
+document.querySelectorAll(".accordion-header").forEach(header => {
+    header.addEventListener("click", () => {
+        header.parentElement.classList.toggle("active");
+    });
+});
+</script>
+
+</body>
+</html>
 </div>
 
 </body>
