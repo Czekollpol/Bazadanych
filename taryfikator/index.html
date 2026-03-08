@@ -3,193 +3,339 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Taryfikator Kar – Rekru Team</title>
+<title>System Warnów – Rekru Team</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+*{box-sizing:border-box;font-family:Segoe UI}
 
 body{
 background:linear-gradient(135deg,#0f172a,#020617);
 color:white;
-min-height:100vh;
-padding-bottom:60px;
-}
-
-/* 🔥 PRZYCISK DOMKU */
-.nav{
-position:fixed;
-top:20px;
-left:20px;
-background:rgba(255,255,255,.08);
-padding:12px 16px;
-border-radius:50%;
-font-size:20px;
-text-decoration:none;
-color:white;
-transition:.3s;
-backdrop-filter:blur(10px);
-}
-
-.nav:hover{
-background:rgba(255,255,255,.18);
-transform:scale(1.1);
-}
-
-/* 🔥 TYTUŁ */
-h1{
+margin:0;
+padding:40px;
 text-align:center;
-margin-top:100px;
-font-size:42px;
-margin-bottom:40px;
-letter-spacing:1px;
 }
 
-/* 🔥 SEKCJE */
-.section{
-width:90%;
-margin:50px auto;
+h1{
+font-size:38px;
+margin-bottom:30px;
 }
 
-.section h2{
-margin-bottom:15px;
-font-size:22px;
-padding:12px 18px;
-border-radius:12px;
-background:rgba(255,255,255,.06);
-color:#cbd5e1;
-letter-spacing:.5px;
+button{
+background:#22d3ee;
+border:none;
+padding:10px 18px;
+border-radius:8px;
+cursor:pointer;
+font-weight:bold;
+margin:5px;
 }
 
-/* 🔥 TABELA */
-table{
-width:100%;
-border-collapse:collapse;
+button:hover{
+opacity:.85;
+}
+
+.panel{
 background:rgba(255,255,255,.05);
-backdrop-filter:blur(10px);
-border-radius:15px;
-overflow:hidden;
+padding:20px;
+border-radius:12px;
+width:350px;
+margin:auto;
+margin-top:20px;
 }
 
-th,td{
-padding:14px;
+input{
+width:100%;
+padding:10px;
+margin:6px 0;
+border:none;
+border-radius:6px;
+}
+
+.result{
+background:rgba(255,255,255,.05);
+padding:12px;
+border-radius:8px;
+margin-top:10px;
 text-align:left;
 }
 
-th{
-background:rgba(255,255,255,.08);
-font-weight:600;
+.warn{
+background:rgba(255,255,255,.06);
+padding:10px;
+border-radius:8px;
+margin-top:8px;
 }
 
-tr:nth-child(even){
-background:rgba(255,255,255,.04);
+.delete{
+background:#ef4444;
+margin-top:5px;
 }
 
-tr:hover{
-background:rgba(255,255,255,.08);
-transition:.2s;
+.popup{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:#0f172a;
+padding:25px;
+border-radius:15px;
+display:none;
+width:340px;
+box-shadow:0 0 25px rgba(0,0,0,.6);
 }
 
-.tier{
-font-weight:bold;
-color:#22d3ee;
+.close{
+background:#ef4444;
 }
+
 </style>
 </head>
+
 <body>
 
-<a href="../index.html" class="nav">🏠</a>
+<h1>System Warnów – Rekru Team</h1>
 
-<h1>TARYFIKATOR KAR</h1>
+<button onclick="openLogin()">⚠ Panel Admina</button>
+<button onclick="openCheck()">❗ Sprawdź UID</button>
 
-<div class="section">
-<h2>A – Lekkie wykroczenia</h2>
-<table>
-<thead>
-<tr>
-<th>Kod</th>
-<th>Opis</th>
-<th>Zakres Tier</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A.1</td>
-<td>Spóźnienie bez wcześniejszej informacji</td>
-<td class="tier">Tier 1</td>
-</tr>
-<tr>
-<td>A.2</td>
-<td>Powtarzające się spóźnienia</td>
-<td class="tier">Tier 1-2</td>
-</tr>
-<tr>
-<td>A.3</td>
-<td>Zaniedbanie drobnego kroku procedury</td>
-<td class="tier">Tier 1-2</td>
-</tr>
-</tbody>
-</table>
+<!-- LOGIN -->
+
+<div class="popup" id="login">
+
+<h3>Panel Admina</h3>
+
+<input type="password" id="adminPass" placeholder="Hasło">
+
+<button onclick="login()">Zaloguj</button>
+<button class="close" onclick="closeLogin()">Zamknij</button>
+
 </div>
 
-<div class="section">
-<h2>B – Średnie wykroczenia</h2>
-<table>
-<thead>
-<tr>
-<th>Kod</th>
-<th>Opis</th>
-<th>Zakres Tier</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>B.1</td>
-<td>Brak współpracy z podopiecznym</td>
-<td class="tier">Tier 2-3</td>
-</tr>
-<tr>
-<td>B.2</td>
-<td>Pominięcie istotnego kroku procedury</td>
-<td class="tier">Tier 2-3</td>
-</tr>
-<tr>
-<td>B.3</td>
-<td>Ignorowanie zaleceń/poleceń HC lub Chief</td>
-<td class="tier">Tier 2-4</td>
-</tr>
-<tr>
-<td>B.4</td>
-<td>Niska współpraca mimo uwag</td>
-<td class="tier">Tier 2-3</td>
-</tr>
-</tbody>
-</table>
+<!-- DODAWANIE WARNA -->
+
+<div class="popup" id="addPanel">
+
+<h3>Dodaj warna</h3>
+
+<input id="uid" placeholder="UID">
+
+<input id="tier" placeholder="Tier">
+
+<input id="reason" placeholder="Przewinienie (np A.1)">
+
+<div id="userName"></div>
+
+<button onclick="addWarn()">Dodaj warna</button>
+<button class="close" onclick="closeAdd()">Zamknij</button>
+
 </div>
 
-<div class="section">
-<h2>C – Ciężkie wykroczenia</h2>
-<table>
-<thead>
-<tr>
-<th>Kod</th>
-<th>Opis</th>
-<th>Zakres Tier</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>C.1</td>
-<td>Wyzywanie podopiecznego</td>
-<td class="tier">Tier 2-5</td>
-</tr>
-<tr>
-<td>C.2</td>
-<td>Oszustwo lub celowe wprowadzanie w błąd</td>
-<td class="tier">Tier 4-5</td>
-</tr>
-</tbody>
-</table>
+<!-- SPRAWDZ UID -->
+
+<div class="popup" id="checkPanel">
+
+<h3>Sprawdź UID</h3>
+
+<input id="checkUid" placeholder="UID">
+
+<button onclick="checkUser()">Sprawdź</button>
+
+<div id="result" class="result"></div>
+
+<button class="close" onclick="closeCheck()">Zamknij</button>
+
 </div>
+
+<script>
+
+const BIN_ID="69ad89dbd0ea881f40fca797"
+const API_KEY="$2a$10$Er4xDqMuTh2Mr5HpTj11dONOsG.FENlRMPKk6ByJ6J/9mQw717iiS"
+
+let data=[]
+
+/* przykładowa lista z panelu Rekru */
+
+let rekruUsers=[
+{uid:"61069",name:"Jan Kowalski"},
+{uid:"61070",name:"Adam Nowak"},
+{uid:"61071",name:"Piotr Zieliński"}
+]
+
+/* POBIERANIE BAZY */
+
+async function loadData(){
+
+let res=await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`,{
+headers:{
+"X-Master-Key":API_KEY
+}
+})
+
+let json=await res.json()
+
+data=json.record.warny || []
+
+}
+
+/* ZAPIS BAZY */
+
+async function saveData(){
+
+await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`,{
+method:"PUT",
+headers:{
+"Content-Type":"application/json",
+"X-Master-Key":API_KEY
+},
+body:JSON.stringify({warny:data})
+})
+
+}
+
+/* LOGIN ADMINA */
+
+function openLogin(){
+document.getElementById("login").style.display="block"
+}
+
+function closeLogin(){
+document.getElementById("login").style.display="none"
+}
+
+function login(){
+
+let pass=document.getElementById("adminPass").value
+
+if(pass==="rekruadmin"){
+
+closeLogin()
+document.getElementById("addPanel").style.display="block"
+
+}else{
+
+alert("Złe hasło")
+
+}
+
+}
+
+/* DODAWANIE WARNA */
+
+function closeAdd(){
+document.getElementById("addPanel").style.display="none"
+}
+
+async function addWarn(){
+
+await loadData()
+
+let uid=document.getElementById("uid").value
+let tier=document.getElementById("tier").value
+let reason=document.getElementById("reason").value
+
+let user=rekruUsers.find(u=>u.uid===uid)
+
+if(!user){
+alert("Nie znaleziono UID")
+return
+}
+
+let date=new Date().toISOString().split("T")[0]
+
+data.push({
+
+id:Date.now(),
+uid:uid,
+name:user.name,
+tier:tier,
+reason:reason,
+date:date
+
+})
+
+await saveData()
+
+alert("Warn dodany")
+
+}
+
+/* SPRAWDZANIE UID */
+
+function openCheck(){
+document.getElementById("checkPanel").style.display="block"
+}
+
+function closeCheck(){
+document.getElementById("checkPanel").style.display="none"
+}
+
+async function checkUser(){
+
+await loadData()
+
+let uid=document.getElementById("checkUid").value
+
+let userWarns=data.filter(w=>w.uid===uid)
+
+if(userWarns.length===0){
+
+document.getElementById("result").innerHTML="Brak warnów"
+
+return
+}
+
+let name=userWarns[0].name
+
+let html=`
+
+<b>UID:</b> ${uid}<br>
+<b>Imię i Nazwisko:</b> ${name}<br>
+<b>Warny:</b> ${userWarns.length}<br><br>
+
+`
+
+userWarns.forEach((w,i)=>{
+
+html+=`
+<div class="warn">
+
+${i+1}. Tier ${w.tier} — ${w.reason}<br>
+Data: ${w.date}<br>
+
+<button class="delete" onclick="deleteWarn(${w.id})">
+Usuń
+</button>
+
+</div>
+`
+
+})
+
+document.getElementById("result").innerHTML=html
+
+}
+
+/* USUWANIE WARNA */
+
+async function deleteWarn(id){
+
+await loadData()
+
+data=data.filter(w=>w.id!==id)
+
+await saveData()
+
+alert("Warn usunięty")
+
+checkUser()
+
+}
+
+loadData()
+
+</script>
 
 </body>
-</html>tml>
+</html>
